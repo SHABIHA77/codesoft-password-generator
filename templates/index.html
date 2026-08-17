@@ -33,9 +33,7 @@
     </header>
 
 
-    <!-- ================================
-         FRONT PAGE
-    ================================= -->
+    <!-- FRONT PAGE -->
 
     <section class="mode-selection" id="modeSelection">
 
@@ -43,11 +41,9 @@
 
         <p>Choose an option to continue</p>
 
-
         <button onclick="showGenerator()">
             🎲 GENERATE A SECURE PASSWORD
         </button>
-
 
         <button onclick="showCustomPassword()">
             ✍️ CREATE YOUR OWN PASSWORD
@@ -56,9 +52,7 @@
     </section>
 
 
-    <!-- ================================
-         GENERATE PASSWORD
-    ================================= -->
+    <!-- GENERATE PASSWORD -->
 
     <main
         class="generator-card"
@@ -66,12 +60,9 @@
         style="display: none;"
     >
 
-        <!-- LEFT SIDE -->
-
         <section class="left-section">
 
             <h2>PASSWORD LENGTH</h2>
-
 
             <div class="length-box">
 
@@ -82,7 +73,6 @@
                     min="4"
                     max="100"
                 >
-
 
                 <input
                     type="range"
@@ -162,8 +152,6 @@
         </section>
 
 
-        <!-- RIGHT SIDE -->
-
         <section class="right-section">
 
             <h2>GENERATED PASSWORD</h2>
@@ -177,7 +165,6 @@
                     placeholder="Your password"
                     readonly
                 >
-
 
                 <button
                     type="button"
@@ -254,9 +241,7 @@
     </main>
 
 
-    <!-- ================================
-         CREATE YOUR OWN PASSWORD
-    ================================= -->
+    <!-- CREATE YOUR OWN PASSWORD -->
 
     <main
         class="generator-card"
@@ -347,6 +332,155 @@
     </main>
 
 
+    <!-- FEEDBACK POPUP -->
+
+    <div
+        class="feedback-overlay"
+        id="feedbackOverlay"
+    >
+
+        <div class="feedback-box">
+
+            <button
+                type="button"
+                class="feedback-close"
+                onclick="closeFeedback()"
+            >
+                ✕
+            </button>
+
+
+            <div
+                class="feedback-content"
+                id="feedbackContent"
+            >
+
+                <div class="feedback-icon">
+                    💬
+                </div>
+
+
+                <h2>SHARE YOUR FEEDBACK</h2>
+
+
+                <p class="feedback-subtitle">
+                    We would love to know about your experience.
+                </p>
+
+
+                <label class="feedback-label">
+                    Rate your experience
+                </label>
+
+
+                <div
+                    class="star-rating"
+                    id="starRating"
+                >
+
+                    <button
+                        type="button"
+                        data-rating="1"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="2"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="3"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="4"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        data-rating="5"
+                    >
+                        ★
+                    </button>
+
+                </div>
+
+
+                <p
+                    class="rating-text"
+                    id="ratingText"
+                >
+                    Select a rating
+                </p>
+
+
+                <input
+                    type="hidden"
+                    id="feedbackRating"
+                >
+
+
+                <label
+                    for="feedbackMessage"
+                    class="feedback-label"
+                >
+                    Your feedback
+                </label>
+
+
+                <textarea
+                    id="feedbackMessage"
+                    class="feedback-textarea"
+                    placeholder="Tell us what you liked or what we can improve..."
+                    rows="5"
+                ></textarea>
+
+
+                <button
+                    type="button"
+                    class="feedback-submit"
+                    onclick="submitFeedback()"
+                >
+                    SUBMIT FEEDBACK
+                </button>
+
+            </div>
+
+
+            <!-- SUCCESS -->
+
+            <div
+                class="feedback-success"
+                id="feedbackSuccess"
+            >
+
+                <div class="success-emoji">
+                    😊
+                </div>
+
+                <h2>THANK YOU!</h2>
+
+                <p>
+                    Your feedback means a lot to us.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
     <!-- FOOTER -->
 
     <footer>
@@ -362,7 +496,7 @@
 
 
 <script>
-
+alert("JavaScript is working")
 
 /* =================================
    LENGTH SLIDER
@@ -634,6 +768,13 @@ function copyPassword() {
             document.getElementById("message").innerText =
                 "Password copied successfully.";
 
+            // Open feedback after successful copy
+            setTimeout(function () {
+
+                openFeedback();
+
+            }, 500);
+
         })
         .catch(function () {
 
@@ -765,6 +906,13 @@ function copyCustomPassword() {
             document.getElementById("customMessage").innerText =
                 "Password copied successfully.";
 
+            // Open feedback after successful copy
+            setTimeout(function () {
+
+                openFeedback();
+
+            }, 500);
+
         })
         .catch(function () {
 
@@ -825,9 +973,159 @@ function clearCustomPassword() {
 
 }
 
+
+/* =================================
+   OPEN FEEDBACK
+================================= */
+
+function openFeedback() {
+
+    document.getElementById("feedbackOverlay").style.display =
+        "flex";
+
+    document.getElementById("feedbackContent").style.display =
+        "block";
+
+    document.getElementById("feedbackSuccess").style.display =
+        "none";
+
+
+    // Reset previous rating
+
+    document.getElementById("feedbackRating").value =
+        "";
+
+    document.getElementById("ratingText").innerText =
+        "Select a rating";
+
+
+    document.querySelectorAll(
+        "#starRating button"
+    ).forEach(function (star) {
+
+        star.classList.remove("selected");
+
+    });
+
+
+    document.getElementById("feedbackMessage").value =
+        "";
+
+}
+
+
+/* =================================
+   STAR RATING
+================================= */
+/* =================================
+   STAR RATING
+================================= */
+
+const stars = document.querySelectorAll("#starRating button");
+
+stars.forEach(function (star) {
+
+    star.addEventListener("click", function () {
+
+        const rating = Number(this.getAttribute("data-rating"));
+
+        document.getElementById("feedbackRating").value = rating;
+
+        stars.forEach(function (item) {
+
+            const itemRating =
+                Number(item.getAttribute("data-rating"));
+
+            if (itemRating <= rating) {
+                item.classList.add("selected");
+            } else {
+                item.classList.remove("selected");
+            }
+
+        });
+
+        document.getElementById("ratingText").innerText =
+            rating + " out of 5 stars";
+
+        console.log("Selected rating:", rating);
+
+    });
+
+});
+/* =================================
+   CLOSE FEEDBACK
+================================= */
+
+function closeFeedback() {
+
+    document.getElementById("feedbackOverlay").style.display =
+        "none";
+
+}
+
+
+/* =================================
+   SUBMIT FEEDBACK
+================================= */
+
+function submitFeedback() {
+
+    const rating =
+        document.getElementById("feedbackRating").value;
+
+    const message =
+        document.getElementById("feedbackMessage").value.trim();
+
+
+    if (rating === "") {
+
+        document.getElementById("ratingText").innerText =
+            "Please select a star rating.";
+
+        return;
+
+    }
+
+
+    if (message === "") {
+
+        document.getElementById("feedbackMessage").focus();
+
+        document.getElementById("feedbackMessage").placeholder =
+            "Please enter your feedback.";
+
+        return;
+
+    }
+
+
+    /*
+       Feedback popup changes to
+       Thank You screen.
+    */
+
+    document.getElementById("feedbackContent").style.display =
+        "none";
+
+    document.getElementById("feedbackSuccess").style.display =
+        "block";
+
+
+    /*
+       Close automatically after
+       showing the smile emoji.
+    */
+
+    setTimeout(function () {
+
+        closeFeedback();
+
+    }, 2500);
+
+}
+console.log("javascript is working ");
 </script>
 
 
 </body>
-
-</html>
+</Html>
