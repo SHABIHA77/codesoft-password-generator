@@ -16,11 +16,11 @@ A simple and user-friendly Password Generator web application built using Python
 
 🔐 Secure Password Generator
 
-"Password Generator" (screenshots/generator.png)
+![Password Generator](screenshots/generator.png)
 
 ✍️ Create Your Own Password
 
-"Create Your Own Password" (screenshots/custom.png)
+![Create Your Own Password](screenshots/custom.png)
 
 ✨ Features
 
