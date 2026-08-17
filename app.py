@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
-import secrets
 import string
+import secrets
 
 app = Flask(__name__)
 
@@ -11,29 +11,29 @@ def home():
 
 
 @app.route("/generate", methods=["POST"])
-def generate_password():
+def generate():
 
     data = request.get_json()
 
-    length = int(data.get("length", 12))
+    length = int(data.get("length", 16))
 
-    if length < 4 or length > 100:
-        return jsonify({
-            "error": "Password length must be between 4 and 100."
-        }), 400
+    uppercase = data.get("uppercase", True)
+    lowercase = data.get("lowercase", True)
+    numbers = data.get("numbers", True)
+    symbols = data.get("symbols", True)
 
     characters = ""
 
-    if data.get("uppercase"):
+    if uppercase:
         characters += string.ascii_uppercase
 
-    if data.get("lowercase"):
+    if lowercase:
         characters += string.ascii_lowercase
 
-    if data.get("numbers"):
+    if numbers:
         characters += string.digits
 
-    if data.get("symbols"):
+    if symbols:
         characters += string.punctuation
 
     if not characters:
@@ -41,10 +41,15 @@ def generate_password():
             "error": "Please select at least one character type."
         }), 400
 
-    password = ""
+    if length < 4 or length > 100:
+        return jsonify({
+            "error": "Password length must be between 4 and 100."
+        }), 400
 
-    for i in range(length):
-        password += secrets.choice(characters)
+    password = "".join(
+        secrets.choice(characters)
+        for _ in range(length)
+    )
 
     return jsonify({
         "password": password
