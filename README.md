@@ -4,7 +4,7 @@ A simple and user-friendly Password Generator web application built using Python
 
 🌐 Live Website
 
-👉 "Open Secure Password Generator" (YOUR_LIVE_WEBSITE_URL)
+👉 "Open Secure Password Generator" (https://codesoft-password-generator.onrender.com)
 
 «The live website link will be updated after deployment.»
 
@@ -12,15 +12,15 @@ A simple and user-friendly Password Generator web application built using Python
 
 🏠 Home Page
 
-"Home Page" (screenshots/home.png)
+![Home Page](screenshots/home.png)
 
 🔐 Secure Password Generator
 
-"Password Generator" (screenshots/generator.png)
+![Password Generator](screenshots/generator.png)
 
 ✍️ Create Your Own Password
 
-"Create Your Own Password" (screenshots/custom.png)
+![Create Your Own Password](screenshots/custom.png)
 
 ✨ Features
 
@@ -48,24 +48,38 @@ A simple and user-friendly Password Generator web application built using Python
 
 📂 Project Structure
 
-CodeSoft Password Generator/
+📂 Project Structure
+
+🔐 CodeSoft-Password-Generator
 │
-├── app.py
-├── README.md
-├── requirements.txt
+├── 🐍 app.py
+├── 📦 requirements.txt
+├── 📖 README.md
 │
-├── screenshots/
-│   ├── home.png
-│   ├── generator.png
-│   └── custom.png
+├── 📁 templates
+│   └── 🌐 index.html
 │
-├── templates/
-│   └── index.html
+├── 📁 static
+│   ├── 🎨 style.css
+│   ├── 🖼️ background.jpg
+│   └── 🔊 copy-sound.mp3
 │
-└── static/
-    ├── style.css
-    ├── background.jpg
-    └── copy-sound.mp3
+└── 📁 screenshots
+    ├── 🏠 home.png
+    ├── 🔐 generator.png
+    └── ✍️ custom.png
+
+📌 File Description
+
+File / Folder| Purpose
+🐍 "app.py"| Flask backend and password generation logic
+📦 "requirements.txt"| Python dependencies
+🌐 "templates/index.html"| Website structure and interface
+🎨 "static/style.css"| Styling and responsive design
+🖼️ "static/background.jpg"| Website background
+🔊 "static/copy-sound.mp3"| Copy notification sound
+📸 "screenshots/"| Project screenshots
+📖 "README.md"| Project documentation
 
 ▶️ How to Run Locally
 
