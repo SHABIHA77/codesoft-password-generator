@@ -479,19 +479,7 @@
         </div>
 
     </div>
-
-
-    <!-- FOOTER -->
-
-    <footer>
-
-        🔒 &nbsp;
-        STAY SECURE. STAY PROTECTED.
-        &nbsp; 🔒
-
-    </footer>
-
-
+ <div class="view-feedback-home">
 </div>
 
 
@@ -768,7 +756,6 @@ function copyPassword() {
             document.getElementById("message").innerText =
                 "Password copied successfully.";
 
-            // Open feedback after successful copy
             setTimeout(function () {
 
                 openFeedback();
@@ -906,7 +893,6 @@ function copyCustomPassword() {
             document.getElementById("customMessage").innerText =
                 "Password copied successfully.";
 
-            // Open feedback after successful copy
             setTimeout(function () {
 
                 openFeedback();
@@ -990,8 +976,6 @@ function openFeedback() {
         "none";
 
 
-    // Reset previous rating
-
     document.getElementById("feedbackRating").value =
         "";
 
@@ -1017,41 +1001,55 @@ function openFeedback() {
 /* =================================
    STAR RATING
 ================================= */
-/* =================================
-   STAR RATING
-================================= */
 
-const stars = document.querySelectorAll("#starRating button");
+const stars =
+    document.querySelectorAll("#starRating button");
+
 
 stars.forEach(function (star) {
 
     star.addEventListener("click", function () {
 
-        const rating = Number(this.getAttribute("data-rating"));
+        const rating =
+            Number(this.getAttribute("data-rating"));
 
-        document.getElementById("feedbackRating").value = rating;
+
+        document.getElementById("feedbackRating").value =
+            rating;
+
 
         stars.forEach(function (item) {
 
             const itemRating =
                 Number(item.getAttribute("data-rating"));
 
+
             if (itemRating <= rating) {
+
                 item.classList.add("selected");
-            } else {
+
+            }
+
+            else {
+
                 item.classList.remove("selected");
+
             }
 
         });
 
+
         document.getElementById("ratingText").innerText =
             rating + " out of 5 stars";
+
 
         console.log("Selected rating:", rating);
 
     });
 
 });
+
+
 /* =================================
    CLOSE FEEDBACK
 ================================= */
@@ -1067,13 +1065,16 @@ function closeFeedback() {
 /* =================================
    SUBMIT FEEDBACK
 ================================= */
+
 function submitFeedback() {
 
     const rating =
         document.getElementById("feedbackRating").value;
 
+
     const message =
         document.getElementById("feedbackMessage").value.trim();
+
 
     if (rating === "") {
 
@@ -1081,7 +1082,9 @@ function submitFeedback() {
             "Please select a star rating.";
 
         return;
+
     }
+
 
     if (message === "") {
 
@@ -1091,28 +1094,42 @@ function submitFeedback() {
             "Please enter your feedback.";
 
         return;
+
     }
 
+
     fetch("/submit-feedback", {
+
         method: "POST",
 
         headers: {
             "Content-Type": "application/json"
         },
 
+
         body: JSON.stringify({
+
             rating: rating,
             message: message
+
         })
+
     })
+
+
     .then(response => {
 
         if (!response.ok) {
+
             throw new Error("Server error");
+
         }
 
         return response.json();
+
     })
+
+
     .then(data => {
 
         if (data.success) {
@@ -1123,26 +1140,59 @@ function submitFeedback() {
             document.getElementById("feedbackSuccess").style.display =
                 "block";
 
+
             setTimeout(function () {
 
                 closeFeedback();
 
             }, 2500);
 
-        } else {
+        }
+
+        else {
 
             alert("Unable to save feedback.");
+
         }
+
     })
+
+
     .catch(error => {
 
         console.error("Feedback error:", error);
 
         alert("Something went wrong while submitting feedback.");
+
     });
+
 }
+
+
 console.log("javascript is working ");
+
+console.log("javascript is working ");
+
 </script>
 
+<div class="bottom-bar">
+
+    <div class="security-text">
+        🔒 &nbsp;
+        STAY SECURE , STAY PROTECTED 
+        &nbsp;🔒
+    </div>
+
+    <button
+        type="button"
+        class="view-feedback-btn"
+        onclick="window.location.href='/feedback'"
+    >
+        💬 VIEW USER FEEDBACK
+    </button>
+
+</div>
+
 </body>
+
 </html>

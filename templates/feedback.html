@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>User Feedback</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+<div class="background">
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="lock-icon">🔐</div>
+
+        <h1>USER FEEDBACK</h1>
+
+        <p>WHAT OUR USERS SAY</p>
+
+    </header>
+
+
+    <!-- FEEDBACK PAGE -->
+
+    <main class="feedback-page">
+
+        <div class="feedback-page-header">
+
+            <div class="feedback-icon">
+                💬
+            </div>
+
+            <h2>USER FEEDBACK</h2>
+
+            <p>
+                See what users have shared about their experience.
+            </p>
+
+        </div>
+
+
+        <!-- FEEDBACK LIST -->
+
+        <div
+            id="feedbackItems"
+            class="feedback-items"
+        >
+
+            <p class="loading-feedback">
+                Loading feedback...
+            </p>
+
+        </div>
+
+
+        <!-- BACK BUTTON -->
+
+        <button
+            type="button"
+            class="back-home-btn"
+            onclick="window.location.href='/'"
+        >
+            ← BACK TO HOME
+        </button>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        🔒 &nbsp;
+        STAY SECURE. STAY PROTECTED.
+        &nbsp; 🔒
+
+    </footer>
+
+
+</div>
+
+
+<script>
+
+function loadFeedback() {
+
+    fetch("/view-feedback")
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            const feedbackItems =
+                document.getElementById("feedbackItems");
+
+            feedbackItems.innerHTML = "";
+
+
+            if (
+                !data.feedbacks ||
+                data.feedbacks.length === 0
+            ) {
+
+                feedbackItems.innerHTML =
+                    "<p class='no-feedback'>No feedback available yet.</p>";
+
+                return;
+
+            }
+
+
+            data.feedbacks.forEach(function (feedback, index) {
+
+                const feedbackBox =
+                    document.createElement("div");
+
+                feedbackBox.className =
+                    "feedback-card";
+
+
+                const userName =
+                    document.createElement("h3");
+
+                userName.innerText =
+                    "💬 User " + (index + 1);
+
+
+                const rating =
+                    document.createElement("div");
+
+                rating.className =
+                    "feedback-card-rating";
+
+                rating.innerText =
+                    "⭐".repeat(feedback.rating);
+
+
+                const message =
+                    document.createElement("p");
+
+                message.innerText =
+                    feedback.message;
+
+
+                feedbackBox.appendChild(userName);
+
+                feedbackBox.appendChild(rating);
+
+                feedbackBox.appendChild(message);
+
+                feedbackItems.appendChild(feedbackBox);
+
+            });
+
+        })
+
+        .catch(function (error) {
+
+            console.error(
+                "Unable to load feedback:",
+                error
+            );
+
+            document.getElementById("feedbackItems").innerHTML =
+                "<p class='no-feedback'>Unable to load feedback.</p>";
+
+        });
+
+}
+
+
+loadFeedback();
+
+</script>
+
+
+</body>
+
+</html>

@@ -26,11 +26,16 @@ def init_db():
 
 
 # ---------------- HOME ----------------
-
 @app.route("/")
 def home():
 
     return render_template("index.html")
+
+
+@app.route("/feedback")
+def feedback():
+
+    return render_template("feedback.html")
 
 
 # ---------------- PASSWORD GENERATOR ----------------
@@ -113,6 +118,33 @@ def submit_feedback():
 
     return jsonify({
         "success": True
+    })
+
+
+# ---------------- VIEW FEEDBACK ----------------
+
+@app.route("/view-feedback")
+def view_feedback():
+
+    conn = sqlite3.connect("feedback.db")
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT rating, message FROM feedback ORDER BY id DESC"
+    )
+
+    feedbacks = cursor.fetchall()
+
+    conn.close()
+
+    return jsonify({
+        "feedbacks": [
+            {
+                "rating": rating,
+                "message": message
+            }
+            for rating, message in feedbacks
+        ]
     })
 
 
