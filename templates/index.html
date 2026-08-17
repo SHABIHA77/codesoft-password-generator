@@ -1067,7 +1067,6 @@ function closeFeedback() {
 /* =================================
    SUBMIT FEEDBACK
 ================================= */
-
 function submitFeedback() {
 
     const rating =
@@ -1076,16 +1075,13 @@ function submitFeedback() {
     const message =
         document.getElementById("feedbackMessage").value.trim();
 
-
     if (rating === "") {
 
         document.getElementById("ratingText").innerText =
             "Please select a star rating.";
 
         return;
-
     }
-
 
     if (message === "") {
 
@@ -1095,37 +1091,58 @@ function submitFeedback() {
             "Please enter your feedback.";
 
         return;
-
     }
 
+    fetch("/submit-feedback", {
+        method: "POST",
 
-    /*
-       Feedback popup changes to
-       Thank You screen.
-    */
+        headers: {
+            "Content-Type": "application/json"
+        },
 
-    document.getElementById("feedbackContent").style.display =
-        "none";
+        body: JSON.stringify({
+            rating: rating,
+            message: message
+        })
+    })
+    .then(response => {
 
-    document.getElementById("feedbackSuccess").style.display =
-        "block";
+        if (!response.ok) {
+            throw new Error("Server error");
+        }
 
+        return response.json();
+    })
+    .then(data => {
 
-    /*
-       Close automatically after
-       showing the smile emoji.
-    */
+        if (data.success) {
 
-    setTimeout(function () {
+            document.getElementById("feedbackContent").style.display =
+                "none";
 
-        closeFeedback();
+            document.getElementById("feedbackSuccess").style.display =
+                "block";
 
-    }, 2500);
+            setTimeout(function () {
 
+                closeFeedback();
+
+            }, 2500);
+
+        } else {
+
+            alert("Unable to save feedback.");
+        }
+    })
+    .catch(error => {
+
+        console.error("Feedback error:", error);
+
+        alert("Something went wrong while submitting feedback.");
+    });
 }
 console.log("javascript is working ");
 </script>
 
-
 </body>
-</Html>
+</html>
