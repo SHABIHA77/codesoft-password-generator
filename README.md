@@ -48,24 +48,38 @@ A simple and user-friendly Password Generator web application built using Python
 
 📂 Project Structure
 
-CodeSoft Password Generator/
+📂 Project Structure
+
+🔐 CodeSoft-Password-Generator
 │
-├── app.py
-├── README.md
-├── requirements.txt
+├── 🐍 app.py
+├── 📦 requirements.txt
+├── 📖 README.md
 │
-├── screenshots/
-│   ├── home.png
-│   ├── generator.png
-│   └── custom.png
+├── 📁 templates
+│   └── 🌐 index.html
 │
-├── templates/
-│   └── index.html
+├── 📁 static
+│   ├── 🎨 style.css
+│   ├── 🖼️ background.jpg
+│   └── 🔊 copy-sound.mp3
 │
-└── static/
-    ├── style.css
-    ├── background.jpg
-    └── copy-sound.mp3
+└── 📁 screenshots
+    ├── 🏠 home.png
+    ├── 🔐 generator.png
+    └── ✍️ custom.png
+
+📌 File Description
+
+File / Folder| Purpose
+🐍 "app.py"| Flask backend and password generation logic
+📦 "requirements.txt"| Python dependencies
+🌐 "templates/index.html"| Website structure and interface
+🎨 "static/style.css"| Styling and responsive design
+🖼️ "static/background.jpg"| Website background
+🔊 "static/copy-sound.mp3"| Copy notification sound
+📸 "screenshots/"| Project screenshots
+📖 "README.md"| Project documentation
 
 ▶️ How to Run Locally
 
