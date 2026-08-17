@@ -4,7 +4,7 @@ A simple and user-friendly Password Generator web application built using Python
 
 🌐 Live Website
 
-👉 "Open Secure Password Generator" (YOUR_LIVE_WEBSITE_URL)
+👉 "Open Secure Password Generator" (https://codesoft-password-generator.onrender.com)
 
 «The live website link will be updated after deployment.»
 
