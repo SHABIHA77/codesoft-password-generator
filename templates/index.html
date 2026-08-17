@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Secure Password Generator</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="background">
+
+        <header>
+
+            <div class="lock-icon">🔐</div>
+
+            <h1>PASSWORD GENERATOR</h1>
+
+            <p>CREATE STRONG & SECURE PASSWORDS</p>
+
+        </header>
+
+
+        <main class="generator-card">
+
+
+            <!-- LEFT SIDE -->
+
+            <section class="left-section">
+
+                <h2>PASSWORD LENGTH</h2>
+
+                <div class="length-box">
+
+                    <input
+                        type="number"
+                        id="length"
+                        value="16"
+                        min="4"
+                        max="100"
+                    >
+
+                    <input
+                        type="range"
+                        id="lengthRange"
+                        value="16"
+                        min="4"
+                        max="100"
+                    >
+
+                </div>
+
+
+                <div class="include-title">
+                    INCLUDE CHARACTERS
+                </div>
+
+
+                <label class="option">
+
+                    <input
+                        type="checkbox"
+                        id="uppercase"
+                        checked
+                    >
+
+                    <span>UPPERCASE LETTERS (A-Z)</span>
+
+                    <b>A</b>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="checkbox"
+                        id="lowercase"
+                        checked
+                    >
+
+                    <span>LOWERCASE LETTERS (a-z)</span>
+
+                    <b>a</b>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="checkbox"
+                        id="numbers"
+                        checked
+                    >
+
+                    <span>NUMBERS (0-9)</span>
+
+                    <b>9</b>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="checkbox"
+                        id="symbols"
+                        checked
+                    >
+
+                    <span>SPECIAL CHARACTERS (!@#$%&*)</span>
+
+                    <b>*</b>
+
+                </label>
+
+            </section>
+
+
+            <!-- RIGHT SIDE -->
+
+            <section class="right-section">
+
+                <h2>GENERATED PASSWORD</h2>
+
+
+                <div class="password-box">
+
+                    <input
+                        type="text"
+                        id="password"
+                        placeholder="Your password"
+                        readonly
+                    >
+
+                    <button
+                        onclick="copyPassword()"
+                        title="Copy Password"
+                    >
+                        📋
+                    </button>
+
+                </div>
+
+
+                <div class="strength-heading">
+
+                    <span>PASSWORD STRENGTH</span>
+
+                    <strong id="strength">STRONG</strong>
+
+                </div>
+
+
+                <div class="strength-bar">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+
+
+                <button
+                    class="generate-btn"
+                    onclick="generatePassword()"
+                >
+                    🔐 GENERATE PASSWORD
+                </button>
+
+
+                <div class="buttons">
+
+                    <button onclick="copyPassword()">
+                        📋 COPY PASSWORD
+                    </button>
+
+                    <button onclick="clearPassword()">
+                        🗑 CLEAR ALL
+                    </button>
+
+                </div>
+
+
+                <p id="message"></p>
+
+            </section>
+
+        </main>
+
+
+        <footer>
+
+            🔒 &nbsp;
+            STAY SECURE. STAY PROTECTED.
+            &nbsp; 🔒
+
+        </footer>
+
+    </div>
+
+
+    <script>
+
+        const lengthInput =
+            document.getElementById("length");
+
+        const lengthRange =
+            document.getElementById("lengthRange");
+
+
+        lengthInput.addEventListener("input", function () {
+
+            lengthRange.value = lengthInput.value;
+
+        });
+
+
+        lengthRange.addEventListener("input", function () {
+
+            lengthInput.value = lengthRange.value;
+
+        });
+
+
+        async function generatePassword() {
+
+            const length =
+                Number(document.getElementById("length").value);
+
+            const uppercase =
+                document.getElementById("uppercase").checked;
+
+            const lowercase =
+                document.getElementById("lowercase").checked;
+
+            const numbers =
+                document.getElementById("numbers").checked;
+
+            const symbols =
+                document.getElementById("symbols").checked;
+
+
+            try {
+
+                const response = await fetch("/generate", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        length: length,
+                        uppercase: uppercase,
+                        lowercase: lowercase,
+                        numbers: numbers,
+                        symbols: symbols
+
+                    })
+
+                });
+
+
+                const data = await response.json();
+
+
+                if (data.password) {
+
+                    document.getElementById("password").value =
+                        data.password;
+
+                    updateStrength(length);
+
+                    document.getElementById("message").innerText =
+                        "Password generated successfully.";
+
+                }
+
+                else {
+
+                    document.getElementById("message").innerText =
+                        data.error;
+
+                }
+
+            }
+
+            catch (error) {
+
+                document.getElementById("message").innerText =
+                    "Something went wrong.";
+
+            }
+
+        }
+
+
+        function updateStrength(length) {
+
+            const bars =
+                document.querySelectorAll(".strength-bar span");
+
+            const strength =
+                document.getElementById("strength");
+
+
+            bars.forEach(function (bar) {
+
+                bar.classList.remove("active");
+
+            });
+
+
+            if (length < 8) {
+
+                bars[0].classList.add("active");
+
+                strength.innerText = "WEAK";
+
+            }
+
+            else if (length < 12) {
+
+                bars[0].classList.add("active");
+                bars[1].classList.add("active");
+
+                strength.innerText = "MEDIUM";
+
+            }
+
+            else if (length < 16) {
+
+                bars[0].classList.add("active");
+                bars[1].classList.add("active");
+                bars[2].classList.add("active");
+
+                strength.innerText = "GOOD";
+
+            }
+
+            else {
+
+                bars.forEach(function (bar) {
+
+                    bar.classList.add("active");
+
+                });
+
+                strength.innerText = "STRONG";
+
+            }
+
+        }
+
+
+        function copyPassword() {
+
+            const password =
+                document.getElementById("password").value;
+
+
+            if (password === "") {
+
+                document.getElementById("message").innerText =
+                    "Generate a password first.";
+
+                return;
+
+            }
+
+
+            navigator.clipboard.writeText(password);
+
+
+            document.getElementById("message").innerText =
+                "Password copied successfully.";
+
+        }
+
+
+        function clearPassword() {
+
+            document.getElementById("password").value = "";
+
+            document.getElementById("message").innerText = "";
+
+            document.getElementById("strength").innerText =
+                "STRONG";
+
+
+            document.querySelectorAll(".strength-bar span")
+                .forEach(function (bar) {
+
+                    bar.classList.remove("active");
+
+                });
+
+        }
+
+    </script>
+
+</body>
+
+</html>
