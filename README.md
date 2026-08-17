@@ -12,7 +12,7 @@ A simple and user-friendly Password Generator web application built using Python
 
 🏠 Home Page
 
-"Home Page" (screenshots/home.png)
+![Home Page](screenshots/home.png)
 
 🔐 Secure Password Generator
 
